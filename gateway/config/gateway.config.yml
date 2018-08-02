@@ -5,15 +5,15 @@ admin:
   hostname: localhost
 serviceEndpoints:
   hello:
-    url: 'http://localhost:9001'
+    url: 'http://hello:9001'
   bye:
-    url: 'http://localhost:9002'
+    url: 'http://bye:9002'
 apiEndpoints:
   api-hello:
-    host: 'localhost'
+    host: 'hello'
     paths: '/hello*'
   api-bye:
-    host: 'localhost'
+    host: 'bye'
     paths: '/bye*'
 policies:
   - proxy
