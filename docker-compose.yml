@@ -1,9 +1,9 @@
 version: '3'
 services:
- # gateway:
- #   image: "xinin/gateway:latest"
- #   ports:
- #     - "9000:9000"
+  gateway:
+    image: "xinin/gateway:latest"
+    ports:
+       - "9000:9000"
   hello:
     image: "xinin/hello:latest"
     ports:
