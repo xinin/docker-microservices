@@ -1,0 +1,36 @@
+http:
+  port: 9000
+admin:
+  port: 9876
+  hostname: localhost
+serviceEndpoints:
+  hello:
+    url: 'http://localhost:9001'
+  bye:
+    url: 'http://localhost:9002'
+apiEndpoints:
+  api-hello:
+    host: 'localhost'
+    paths: '/hello*'
+  api-bye:
+    host: 'localhost'
+    paths: '/bye*'
+policies:
+  - proxy
+pipelines:
+  - name: pipeline-hello
+    apiEndpoints:
+      - api-hello
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: hello
+            changeOrigin: true
+  - name: pipeline-bye
+    apiEndpoints:
+      - api-bye
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: bye
+            changeOrigin: true
