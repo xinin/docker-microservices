@@ -1,9 +1,11 @@
 FROM node:alpine
 
-WORKDIR /app
-ADD . /app
+RUN npm install -g nodemon
 
-RUN npm install
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod 775 /usr/local/bin/entrypoint.sh
+ENTRYPOINT [ "entrypoint.sh" ]
+
+WORKDIR /app
 
 EXPOSE 9000
-CMD ["npm","start"]

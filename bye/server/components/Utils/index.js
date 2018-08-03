@@ -1,37 +1,32 @@
 const uniqid = require('uniqid');
 
-class Utils {
-  static middleware(req, res, next) {
-    if (req.headers && req.headers.uniqid) {
-      req.uniqid = req.headers.uniqid;
-    } else {
-      req.uniqid = Utils.uniqid();
-    }
-    res.set({ uniqid: req.uniqid });
+const middleware = (req, res, next) => {
+  if (req.headers && req.headers.uniqid) {
+    req.uniqid = req.headers.uniqid;
+  } else {
+    req.uniqid = uniqid();
+  }
+  res.set({ uniqid: req.uniqid });
 
-    next();
+  next();
+};
+
+const response = (req, res, statusCode = 500, body) => {
+  let data;
+
+  if (body && typeof body === 'string') {
+    data = { msg: body };
   }
 
-  static uniqid() {
-    return uniqid();
+  if (statusCode >= 500) {
+    data = { msg: 'Oops!, something was wrong.' };
   }
 
-  static response(req, res, statusCode, body) {
-    statusCode = statusCode || 500;
+  data = JSON.stringify(data);
 
-    if (body && typeof body === 'string') {
-      body = { msg: body };
-    }
+  res.status(statusCode || 500).send(data);
+};
 
-    if (statusCode >= 500) {
-      body = { msg: 'Oops!, something was wrong.' };
-    }
-
-    body = JSON.stringify(body);
-
-    res.status(statusCode || 500).send(body);
-  }
-}
-
-module.exports = Utils;
-
+module.exports = {
+  middleware, response, uniqid,
+};

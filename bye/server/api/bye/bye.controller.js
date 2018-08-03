@@ -1,6 +1,4 @@
-const App = require('./../../components/App');
-
-const Utils = App.Utils();
+const Utils = require('./../../components/Utils');
 
 exports.bye = (req, res) => {
   Utils.response(req, res, 200, 'Bye World!');
@@ -9,4 +7,3 @@ exports.bye = (req, res) => {
 exports.byebye = (req, res) => {
   Utils.response(req, res, 200, 'Bye Bye World!');
 };
-

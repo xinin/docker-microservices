@@ -1,14 +1,37 @@
-version: '3'
+version: '3.2'
 services:
- # gateway:
- #   image: "xinin/gateway:latest"
- #   ports:
- #     - "9000:9000"
+  gateway:
+    build: "./gateway"
+    volumes:
+      - type: bind
+        source: ./gateway
+        target: /app
+    ports:
+      - "9000:9000"
+    networks:
+      fargate-api:
+        ipv4_address: 172.16.1.10
   hello:
-    image: "xinin/hello:latest"
-    ports:
-      - "9001:9000"
+    build: "./hello"
+    volumes:
+      - type: bind
+        source: ./hello
+        target: /app
+    networks:
+      fargate-api:
+        ipv4_address: 172.16.1.12
   bye:
-    image: "xinin/bye:latest"
-    ports:
-      - "9002:9000"
+    build: "./bye"
+    volumes:
+      - type: bind
+        source: ./bye
+        target: /app
+    networks:
+      fargate-api:
+        ipv4_address: 172.16.1.13
+networks:
+  fargate-api:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.1.0/24

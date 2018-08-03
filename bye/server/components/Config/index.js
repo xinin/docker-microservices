@@ -6,8 +6,8 @@ const Config = {
   app: {
     port: 9000,
     ip: '0.0.0.0',
-    maxWorkerCrashes: 5
-  }
+    maxWorkerCrashes: 5,
+  },
 };
 
 let custom = {};
@@ -19,5 +19,5 @@ try {
 
 module.exports = _.merge(
   Config,
-  custom || {}
+  custom || {},
 );

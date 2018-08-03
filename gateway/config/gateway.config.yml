@@ -5,9 +5,9 @@ admin:
   hostname: localhost
 serviceEndpoints:
   hello:
-    url: 'http://localhost:9001'
+    url: 'http://172.16.1.12:9000'
   bye:
-    url: 'http://localhost:9002'
+    url: 'http://172.16.1.13:9000'
 apiEndpoints:
   api-hello:
     host: 'localhost'

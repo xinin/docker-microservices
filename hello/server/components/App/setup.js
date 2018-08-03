@@ -16,7 +16,7 @@ const Setup = function setup() {
 
   Promise.all(promises).then(
     () => this.emit('success', null),
-    err => this.emit('error', err)
+    err => this.emit('error', err),
   );
 };
 

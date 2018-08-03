@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const compression = require('compression');
 const bodyParser = require('body-parser');
@@ -8,13 +6,12 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
+const http = require('http');
 
 const setup = require('./setup');
 const router = require('./router');
-const App = require('./index');
-
-const Config = App.Config();
-const Utils = App.Utils();
+const Config = require('../Config');
+const Utils = require('../Utils');
 
 const app = express();
 app.use(helmet.hidePoweredBy({ setTo: 'PHP 5.3.0' })); // hidePoweredBy to remove the X-Powered-By header
@@ -46,12 +43,13 @@ setup.once('success', () => {
   // Multithread
   if (cluster.isMaster) {
     for (let i = 0; i < numCPUs; i += 1) {
+      console.log('Hello cluster: ', i);
       cluster.fork();
     }
 
-    let maxWorkerCrashes = Config.app.maxWorkerCrashes;
+    let { maxWorkerCrashes } = Config.app;
     cluster.on('exit', (worker) => {
-      App.log().info(false, `worker ${worker.process.pid} died`);
+      console.error(`worker ${worker.process.pid} died`);
       if (worker.suicide !== true) {
         maxWorkerCrashes += 1;
         if (maxWorkerCrashes <= 0) {
@@ -64,7 +62,7 @@ setup.once('success', () => {
   } else {
     try {
       router.routes(app);
-      const server = require('http').createServer(app);
+      const server = http.createServer(app);
       server.listen(Config.app.port, Config.app.ip, () => {
         console.log(`API server listening on ${Config.app.ip}:${Config.app.port}`);
       });
